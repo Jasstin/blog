@@ -1,0 +1,112 @@
+@import "./var";
+html,body{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background:var(--main-bg-color);
+  font-family: 'Microsoft Yahei';
+  text-rendering: geometricPrecision;
+}
+.global-wrapper{
+  min-height: 100vh;
+  padding-top: 60px;
+}
+.global-header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  z-index:1;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 1px 1px 1px lin;
+  .main-heading{
+    width: 1000px;
+    padding: 5px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    .header-title{
+      font-size: 20px;
+      color: #111;
+      text-decoration: none;
+      line-height: 35px;
+    }
+    .header-nav{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .bio-avatar{
+      border-radius: 100%;
+      border: 1px solid #ddd;
+    }
+  }
+}
+.global-content{
+  width: 1000px;
+  background: #fff;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  position: relative;
+}
+.article-list{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  .article-list-item{
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(240,240,240,0.5);
+    .title{
+      padding: 10px 0;
+      font-size: 18px;
+      color: #222;
+      margin: 0;
+      a{
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+    .date{
+      font-size: 12px;
+      color: #bbb;
+    }
+    .description{
+      font-size: 14px;
+      color: #666;
+      line-height: 1.5;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .tag{
+      color: #c92f4e;
+      font-size: 14px;
+      margin-right: 10px;
+      &:before{
+        content:'#'
+      }
+    }
+  }
+  .article-list-item:last-child{
+    border: none;
+  }
+}
+.page-control-group{
+  display: flex; flex-wrap: wrap; justify-content: space-between; list-style: none; padding: 0px;color: #222;
+  padding: 10px;
+  position: absolute;
+  bottom:-60px;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  a{
+    text-decoration: none;
+    color: inherit;
+    &:hover{
+      color: #c92f4e;
+    }
+  }
+}

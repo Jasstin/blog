@@ -1,4 +1,5 @@
 const path = require(`path`)
+const _ = require("lodash")
 const { createFilePath } = require(`gatsby-source-filesystem`)
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
@@ -6,25 +7,32 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   // Define a template for blog post
   const blogPost = path.resolve(`./src/templates/blog-post.js`)
+  const homePaginate = path.resolve(`./src/templates/blog.js`)
 
   // Get all markdown blog posts sorted by date
-  const result = await graphql(
-    `
-      {
-        allMarkdownRemark(
-          sort: { fields: [frontmatter___date], order: ASC }
-          limit: 1000
-        ) {
-          nodes {
-            id
-            fields {
-              slug
-            }
-          }
+  const result = await graphql(`
+  {
+  allMarkdownRemark(sort: {fields: frontmatter___date, order: DESC}, limit: 1000) {
+     nodes {
+      id
+      fields {
+        slug
+      }
+    }
+    edges {
+      node {
+        id
+        frontmatter {
+          tags
         }
       }
-    `
-  )
+    }
+    group(field: frontmatter___tags) {
+      tag: fieldValue
+      totalCount
+    }
+  }
+  }`)
 
   if (result.errors) {
     reporter.panicOnBuild(
@@ -53,6 +61,25 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           previousPostId,
           nextPostId,
         },
+      })
+    })
+    //  create homepage pagination
+    result.data.allMarkdownRemark.group.forEach(tag => {
+      const total = tag.totalCount
+      const postsPerPage = 10
+      const numPages = Math.ceil(total / postsPerPage)
+      Array.from({length: numPages}).forEach((_, i) => {
+        createPage({
+          path: i === 0 ? `/tag/${tag.tag}` : `/tag/${tag.tag}/${i + 1}`,
+          component: homePaginate,
+          context: {
+            tag: tag.tag,
+            currentPage: i + 1,
+            totalPage: numPages,
+            limit: postsPerPage,
+            skip: i * postsPerPage,
+          },
+        })
       })
     })
   }
